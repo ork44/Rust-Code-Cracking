@@ -3,6 +3,8 @@ from random import randint
 from time import sleep
 from pynput.keyboard import Key, Listener
 import os
+import pyautogui
+import time
 
 class Cracking:
 
@@ -14,6 +16,7 @@ class Cracking:
     person_number = int(input("You are person number: "))
     count = int(input("Enter the starting count: ")) + (person_number - 1)
     trigger_key = str(input("Enter the trigger key: "))[0]
+    width, height= pyautogui.size()
 
     #Input validation
     if people > 10000 : people = 10000
@@ -28,11 +31,27 @@ class Cracking:
 
     print("Press " + trigger_key + " to try a code!")
     
+
+    def click_lock(self):
+        timer = 0
+        while timer < 0.7:
+            time.sleep(0.1)
+            timer += 0.1
+            keyboard.press('e')
+        sleep(randint(10,20)/1000)
+        pyautogui.moveTo((randint(75,85)/100) * self.width, (randint(80,95)/100) * self.height)
+        sleep(randint(10,20)/1000)
+        pyautogui.click(0.8 * self.width, 0.9 * self.height)
+        keyboard.release('e')
+        sleep(randint(10,20)/1000)
+
+
     #Crack function
     def crack(self, key):
         #Check if key has an attribute char  
         if hasattr(key, "char"):
             if key.char == self.trigger_key:
+                Cracking.click_lock(self)
                 #Put the current code in a list
                 code = list(self.codes[self.count][:-1])
                 #Loop through list
